@@ -2,41 +2,189 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>트로트 감성 가사 플레이어</title>
-<!-- 트로트 감성에 어울리는 굵고 둥근 웹 폰트(Jua) 불러오기 -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Elon Song</title>
 <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 <style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100dvh; 
+    overflow: hidden; 
+    background: radial-gradient(circle at 50% 0%, #2a1025 0%, #050508 100%); 
+  }
+
   body {
-    /* 어두운 무대 조명 느낌의 보랏빛 그라데이션 배경 */
-    background: radial-gradient(circle, #3a0033 0%, #0a0011 100%);
     color: #ffffff;
     font-family: 'Jua', sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    margin: 0;
+    justify-content: flex-start; 
+    position: relative; 
   }
   
+  .mirror-ball-string {
+    position: absolute;
+    top: 0;
+    left: calc(50% - 2px);
+    width: 4px;
+    height: 40px;
+    background: #333;
+    z-index: 10;
+  }
+
+  .mirror-ball {
+    position: absolute;
+    top: 40px;
+    left: calc(50% - 50px);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #c0c0c0;
+    background-image: 
+      linear-gradient(45deg, #a0a0a0 25%, transparent 25%, transparent 75%, #a0a0a0 75%, #a0a0a0), 
+      linear-gradient(45deg, #a0a0a0 25%, transparent 25%, transparent 75%, #a0a0a0 75%, #a0a0a0);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
+    box-shadow: inset -10px -10px 20px rgba(0,0,0,0.8), 
+                inset 10px 10px 20px rgba(255,255,255,0.5),
+                0 0 15px rgba(255,255,255,0.2);
+    animation: spin 6s linear infinite;
+    z-index: 10;
+  }
+
+  @keyframes spin {
+    0% { background-position: 0 0, 10px 10px; transform: rotate(0deg); }
+    100% { background-position: 100px 100px, 110px 110px; transform: rotate(360deg); }
+  }
+
+  .reflections-container {
+    position: absolute;
+    top: 90px;
+    left: 50%;
+    width: 0;
+    height: 0;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0.25; 
+  }
+
+  .reflections-layer-1 {
+    position: absolute;
+    width: 6px; height: 6px; border-radius: 50%;
+    box-shadow: 
+      -150px 200px 8px 3px #ff007f,  150px 250px 6px 2px #ffffff,
+      -250px -100px 7px 2px #ff007f, 250px -150px 9px 3px #ffffff,
+      -350px 300px 5px 2px #ff007f,  350px 350px 8px 4px #ffffff,
+        0px 350px 10px 3px #ff007f, -200px 400px 6px 2px #ffffff,
+       200px -450px 7px 2px #ff007f,-400px -150px 8px 3px #ffffff,
+       400px 200px 5px 2px #ff007f, -300px -500px 9px 4px #ffffff,
+       300px 50px 6px 2px #ff007f,   100px 500px 8px 3px #ffffff,
+      -450px 250px 7px 2px #ff007f, -100px -350px 5px 2px #ffffff;
+    animation: spin-reflections 8s linear infinite, twinkle 2s infinite alternate;
+  }
+
+  .reflections-layer-2 {
+    position: absolute;
+    width: 5px; height: 5px; border-radius: 50%;
+    box-shadow: 
+      -100px -200px 6px 2px #00ffff, 120px -250px 8px 3px #ffff00,
+      -280px 100px 5px 2px #00ffff,  260px 150px 7px 2px #ffff00,
+      -320px -300px 9px 4px #00ffff, 380px -350px 6px 2px #ffff00,
+        0px -350px 8px 3px #00ffff, -220px -400px 5px 2px #ffff00,
+       180px 450px 7px 3px #00ffff, -420px 150px 6px 2px #ffff00,
+       350px -200px 8px 4px #00ffff,-250px 400px 5px 2px #ffff00,
+       500px 100px 6px 2px #00ffff, -500px -100px 8px 3px #ffff00,
+      -150px 500px 7px 3px #00ffff,  200px -500px 6px 2px #ffff00;
+    animation: spin-reflections 10s linear infinite reverse, twinkle 2.5s infinite alternate-reverse;
+  }
+
+  @keyframes spin-reflections {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+
+  @keyframes twinkle {
+    0% { opacity: 0.3; }
+    100% { opacity: 1; }
+  }
+
+  .light-beams {
+    position: absolute;
+    top: 90px;
+    left: 50%;
+    margin-left: -100vw; 
+    width: 200vw; 
+    height: 200vh;
+    background: conic-gradient(from 180deg at 50% 0%, 
+                transparent 40%, rgba(255, 255, 255, 0.05) 45%, transparent 50%, 
+                rgba(255, 215, 0, 0.05) 55%, transparent 60%);
+    animation: sweep 4s infinite alternate ease-in-out;
+    pointer-events: none; 
+    z-index: 1;
+    transform-origin: 50% 0%;
+  }
+
+  @keyframes sweep {
+    0% { transform: rotate(-25deg); }
+    100% { transform: rotate(25deg); }
+  }
+
+  .dancer {
+    position: absolute;
+    bottom: 50px;
+    font-size: clamp(3rem, 10vw, 5rem);
+    z-index: 15;
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.8));
+    pointer-events: none;
+  }
+
+  .dancer.left {
+    left: 8%;
+    animation: groove-left 1.2s infinite alternate ease-in-out;
+  }
+
+  .dancer.right {
+    right: 8%;
+    animation: groove-right 1.2s infinite alternate-reverse ease-in-out;
+  }
+
+  @keyframes groove-left {
+    0% { transform: translateY(0) rotate(-15deg); }
+    100% { transform: translateY(-25px) rotate(15deg) scale(1.1); }
+  }
+
+  @keyframes groove-right {
+    0% { transform: translateY(0) rotate(15deg); }
+    100% { transform: translateY(-25px) rotate(-15deg) scale(1.1); }
+  }
+
   #audio-player {
+    position: relative;
+    margin-top: 170px; 
     margin-bottom: 20px;
-    width: 300px;
-    /* 플레이어에도 약간의 핑크 그림자 부여 */
-    box-shadow: 0 4px 15px rgba(255, 0, 127, 0.5);
+    width: 90%; 
+    max-width: 320px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6); 
     border-radius: 30px;
+    z-index: 20; 
   }
 
   #lyrics-container {
+    position: relative;
     text-align: center;
-    height: 350px;
-    width: 95%;
+    flex: 1; 
+    width: 100%;
     max-width: 600px;
+    padding: 0 20px; 
+    box-sizing: border-box; 
     overflow-y: auto; 
-    scroll-behavior: smooth; 
     -ms-overflow-style: none; 
     scrollbar-width: none; 
+    z-index: 20;
+    margin-bottom: 20px;
   }
   
   #lyrics-container::-webkit-scrollbar {
@@ -44,32 +192,44 @@
   }
 
   #lyrics-scroll {
-    padding: 150px 0; 
+    padding: 50vh 0; 
   }
 
   .lyric-line {
-    padding: 15px 0;
-    color: #888888; 
-    font-size: 1.5rem;
-    transition: all 0.3s ease-in-out;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    padding: 12px 0;
+    color: #777777; 
+    font-size: clamp(1.1rem, 4.5vw, 1.4rem);
+    transition: all 0.4s ease-in-out;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+    word-break: keep-all; 
+    line-height: 1.5; 
   }
 
-  /* 활성화된 가사: 트로트/노래방 스타일의 하이라이트 */
   .lyric-line.active {
-    color: #FFFF00; /* 쨍한 노란색 */
-    font-size: 2.2rem; /* 글씨를 훨씬 크게 */
-    /* 핫핑크색 두꺼운 테두리 */
-    -webkit-text-stroke: 1.5px #FF007F; 
-    /* 깊이감 있는 3D 그림자와 네온 발광 효과 */
-    text-shadow: 3px 3px 0 #550022, 0 0 20px #FF007F, 0 0 40px #FF007F;
-    transform: scale(1.1);
+    color: #fffbdd; 
+    font-size: clamp(1.5rem, 6vw, 2rem); 
+    -webkit-text-stroke: 0px; 
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.9), 0 0 12px rgba(255, 255, 255, 0.3);
+    transform: scale(1.05); 
   }
 </style>
 </head>
 <body>
 
-  <audio id="audio-player" controls autoplay src="https://github.com/popipie/darkwar/raw/refs/heads/main/song/ElonSong.mp3"></audio>
+  <div class="mirror-ball-string"></div>
+  <div class="mirror-ball"></div>
+  
+  <div class="reflections-container">
+    <div class="reflections-layer-1"></div>
+    <div class="reflections-layer-2"></div>
+  </div>
+  
+  <div class="light-beams"></div>
+
+  <div class="dancer left">🕺</div>
+  <div class="dancer right">💃</div>
+
+  <audio id="audio-player" controls autoplay src="https://github.com/gosida/darkwar/raw/refs/heads/main/ElonSong.mp3"></audio>
 
   <div id="lyrics-container">
     <div id="lyrics-scroll"></div>
@@ -78,25 +238,27 @@
   <script>
     const lyricsData = [
       { start: 14.0, end: 17.0, text: "일론 연합은 멍청이들" },
-      { start: 17.0, end: 20.0, text: "배신자 집단" },
-      { start: 20.0, end: 23.0, text: "돈만 쓰고 게임 못하는" },
-      { start: 23.0, end: 26.0, text: "할매와 따까리들" },
-      { start: 27.0, end: 30.0, text: "입만터는 바보들 천지" },
-      { start: 30.0, end: 33.0, text: "허세만 가득" },
+      { start: 17.0, end: 20.5, text: "배신자 집단" },
+      { start: 20.5, end: 23.8, text: "돈만 쓰고 게임 못하는" },
+      { start: 23.8, end: 27.2, text: "할매와 따까리들" },
+      { start: 27.2, end: 30.8, text: "입만 터는 바보들 천지" },
+      { start: 30.8, end: 34.0, text: "허세만 가득" },
       { start: 34.0, end: 37.0, text: "굽실굽실 비아냥대는" },
       { start: 37.0, end: 40.0, text: "사람들 득실득실" },
       { start: 40.0, end: 43.5, text: "그러니 내분이 일어나고" },
-      { start: 43.5, end: 47.0, text: "매번 또 사람이 떠나가지" },
-      { start: 47.0, end: 51.0, text: "빈 자리에 누가올까" },
-      { start: 51.0, end: 55.0, text: "또 같은 이야기가 시작되지" },
-      { start: 56.0, end: 57.5, text: "불쌍하다 불쌍하다" },
-      { start: 57.5, end: 59.0, text: "많이 불쌍하다" },
-      { start: 59.0, end: 62.0, text: "또 이민받아 배신자로 채우겠네" },
+      { start: 43.5, end: 47.5, text: "매번 또 사람이 떠나가지" },
+      { start: 47.5, end: 50.7, text: "빈자리에 누가 올까" },
+      { start: 50.7, end: 56.0, text: "또 같은 이야기가 시작되지" },
+      { start: 56.0, end: 57.8, text: "불쌍하다 불쌍하다" },
+      { start: 57.8, end: 59.5, text: "많이 불쌍하다" },
+      { start: 59.5, end: 60.5, text: "또 이민 받아" },
+      { start: 60.5, end: 63.0, text: "배신자로 채우겠네" },
       { start: 63.0, end: 64.5, text: "불쌍하다 불쌍하다" },
       { start: 64.5, end: 66.0, text: "정말 불쌍하다" },
       { start: 66.0, end: 72.0, text: "돈 썼는데 게임은 왜 못하나" }
     ];
 
+    const container = document.getElementById('lyrics-container'); 
     const scrollContainer = document.getElementById('lyrics-scroll');
     const audio = document.getElementById('audio-player');
     
@@ -136,9 +298,14 @@
         if (currentActiveIndex !== -1 && lyricElements[currentActiveIndex]) {
           const activeEl = lyricElements[currentActiveIndex];
           activeEl.classList.add('active');
-          activeEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          
+          const targetPos = activeEl.offsetTop - (container.clientHeight / 2) + (activeEl.clientHeight / 2);
+          container.scrollTo({ top: targetPos, behavior: 'smooth' });
+          
         } else if (currentTime < lyricsData[0].start && lyricElements[0]) {
-          lyricElements[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+          const activeEl = lyricElements[0];
+          const targetPos = activeEl.offsetTop - (container.clientHeight / 2) + (activeEl.clientHeight / 2);
+          container.scrollTo({ top: targetPos, behavior: 'smooth' });
         }
       }
     });
